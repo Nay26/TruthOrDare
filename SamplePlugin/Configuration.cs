@@ -2,7 +2,7 @@ using Dalamud.Configuration;
 using Dalamud.Plugin;
 using System;
 
-namespace FFSpeedDate { 
+namespace TruthOrDare { 
     public enum MainTab { PlayerList, Match, About }
 
     [Serializable]

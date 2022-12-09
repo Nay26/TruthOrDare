@@ -1,8 +1,8 @@
 using Dalamud.Interface;
 using Dalamud.Utility;
-using FFSpeedDate.Extensions;
-using FFSpeedDate.Models;
-using FFSpeedDate.Windows;
+using TruthOrDare.Extensions;
+using TruthOrDare.Models;
+using TruthOrDare.Windows;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using static Lumina.Data.Parsing.Layer.LayerCommon;
 
-namespace FFSpeedDate.Modules
+namespace TruthOrDare.Modules
 {
     public class Match
     {

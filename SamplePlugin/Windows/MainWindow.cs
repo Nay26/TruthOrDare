@@ -5,21 +5,21 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Numerics;
-using FFSpeedDate.Modules;
+using TruthOrDare.Modules;
 
-namespace FFSpeedDate.Windows;
+namespace TruthOrDare.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    private readonly FFSpeedDate plugin;
+    private readonly TruthOrDare plugin;
     public static Configuration Config { get; set; }
     public Match Match;
     public PlayerList PlayerList;
 
     private MainTab currentMainTab = MainTab.PlayerList;
 
-    public MainWindow(FFSpeedDate plugin) : base(
-        "FF Speed Date", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+    public MainWindow(TruthOrDare plugin) : base(
+        "Truth Or Dare", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
@@ -73,21 +73,21 @@ public class MainWindow : Window, IDisposable
 
     private void DrawMainTabs()
     {
-        if (ImGui.BeginTabBar("FFSpeedDateMainTabBar", ImGuiTabBarFlags.NoTooltip))
+        if (ImGui.BeginTabBar("TruthOrDareMainTabBar", ImGuiTabBarFlags.NoTooltip))
         {
-            if (ImGui.BeginTabItem("Player List###FFSpeedDate_PlayerList_MainTab"))
+            if (ImGui.BeginTabItem("Player List###TruthOrDare_PlayerList_MainTab"))
             {
                 currentMainTab = MainTab.PlayerList;
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Match###FFSpeedDate_Match_MainTab"))
+            if (ImGui.BeginTabItem("Match###TruthOrDare_Match_MainTab"))
             {
                 currentMainTab = MainTab.Match;
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("About###FFSpeedDate_About_MainTab"))
+            if (ImGui.BeginTabItem("About###TruthOrDare_About_MainTab"))
             {
                 currentMainTab = MainTab.About;
                 ImGui.EndTabItem();

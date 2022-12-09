@@ -3,8 +3,8 @@ using Dalamud.Game.ClientState.Objects;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Utility;
-using FFSpeedDate.Models;
-using FFSpeedDate.Windows;
+using TruthOrDare.Models;
+using TruthOrDare.Windows;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using System;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 
-namespace FFSpeedDate.Modules
+namespace TruthOrDare.Modules
 {
     public class PlayerList
     {
@@ -342,7 +342,7 @@ namespace FFSpeedDate.Modules
 
         private void AddTarget()
         {
-            var target = FFSpeedDate.ClientState.LocalPlayer.TargetObject;
+            var target = TruthOrDare.ClientState.LocalPlayer.TargetObject;
             if (target.ObjectKind == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Player)
             {          
                 newPlayer.FirstName = target.Name.TextValue.Split(" ").First();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FFSpeedDate.Models
+namespace TruthOrDare.Models
 {
     public enum Gender
     {
