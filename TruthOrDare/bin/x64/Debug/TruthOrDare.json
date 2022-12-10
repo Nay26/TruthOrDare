@@ -1,0 +1,15 @@
+{
+  "Author": "Adiana",
+  "Name": "TruthOrDare",
+  "InternalName": "TruthOrDare",
+  "AssemblyVersion": "0.0.0.1",
+  "Description": "/tord",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "sample",
+    "plugin"
+  ],
+  "DalamudApiLevel": 7,
+  "LoadPriority": 0,
+  "Punchline": "A speed dating matchmaker"
+}
