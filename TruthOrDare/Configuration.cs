@@ -3,7 +3,7 @@ using Dalamud.Plugin;
 using System;
 
 namespace TruthOrDare { 
-    public enum MainTab { PlayerList, Match, About }
+    public enum MainTab { PlayerList, Game, About }
 
     [Serializable]
     public class Configuration : IPluginConfiguration

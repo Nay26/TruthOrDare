@@ -13,7 +13,7 @@ public class MainWindow : Window, IDisposable
 {
     private readonly TruthOrDare plugin;
     public static Configuration Config { get; set; }
-    public Match Match;
+    public Game Game;
     public PlayerList PlayerList;
 
     private MainTab currentMainTab = MainTab.PlayerList;
@@ -29,13 +29,13 @@ public class MainWindow : Window, IDisposable
 
         this.plugin = plugin;
 
-        Match = new Match(this);
+        Game = new Game(this);
         PlayerList = new PlayerList(this);
     }
 
     public void Initialize()
     {
-        Match = new Match(this);
+        Game = new Game(this);
         PlayerList = new PlayerList(this);
     }
 
@@ -54,9 +54,9 @@ public class MainWindow : Window, IDisposable
                     PlayerList.DrawPlayerList();
                     break;
                 }
-            case MainTab.Match:
+            case MainTab.Game:
                 {
-                    Match.DrawMatch();
+                    Game.DrawMatch();
                     break;
                 }
             case MainTab.About:
@@ -81,9 +81,9 @@ public class MainWindow : Window, IDisposable
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Match###TruthOrDare_Match_MainTab"))
+            if (ImGui.BeginTabItem("Game###TruthOrDare_Match_MainTab"))
             {
-                currentMainTab = MainTab.Match;
+                currentMainTab = MainTab.Game;
                 ImGui.EndTabItem();
             }
 
