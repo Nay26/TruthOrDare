@@ -22,7 +22,6 @@ namespace TruthOrDare.Modules
         public bool Enabled = false;
         public List<Player> players;
         public Player newPlayer;
-        private int gender;
 
         private Configuration Config;
 

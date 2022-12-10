@@ -6,12 +6,17 @@ using System.Reflection;
 using Dalamud.Interface.Windowing;
 using TruthOrDare.Windows;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game;
 
 namespace TruthOrDare
 {
     public sealed class TruthOrDare : IDalamudPlugin
     {
         [PluginService] public static ClientState ClientState { get; private set; } = null!;
+        [PluginService] public static ObjectTable Objects { get; private set; } = null!;
+        [PluginService] public static SigScanner SigScanner { get; private set; } = null!;
+
         public string Name => "TruthOrDare";
         private const string CommandName = "/tord";
 
