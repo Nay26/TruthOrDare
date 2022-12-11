@@ -1,4 +1,5 @@
-{
+[
+    {
         "Author": "Adiana",
         "Name": "TruthOrDare",
         "InternalName": "TruthOrDare",
@@ -18,4 +19,5 @@
         "IsTestingExclusive": false,
         "DownloadLinkTesting": "https://github.com/Nay26/TruthOrDare/raw/master/bin/TruthOrDare.zip",
         "DownloadLinkUpdate": "https://github.com/Nay26/TruthOrDare/raw/master/bin/TruthOrDare.zip"
-}
+    }
+]
