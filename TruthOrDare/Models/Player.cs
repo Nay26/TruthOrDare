@@ -17,8 +17,6 @@ namespace TruthOrDare.Models
             public int Winnings = 0;
             public int TotalWinnings = 0;
             public int Roll;
-            public string FirstName = "Bed";
-            public string SecondName = "ff";
 
 
             private enum ChatNameDisplayTypes { FullName, SurnameAbbrv, ForenameAbbrv, Initials }

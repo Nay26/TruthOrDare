@@ -20,7 +20,7 @@ namespace TruthOrDare
         public string RollCommand { get; set; } = "/dice"; // /random
         public string ChatChannel { get; set; } = "/p"; // /s
         public bool AutoParty { get; set; } = true;
-        public NameMode AutoNameMode { get; set; } = NameMode.First;
+        public NameMode AutoNameMode { get; set; } = NameMode.Both;
 
         public TruthOrDareConfig TruthOrDareConfig { get; set; } = new TruthOrDareConfig();
         public void Initialize(DalamudPluginInterface pluginInterface)

@@ -6,6 +6,9 @@ using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Numerics;
 using TruthOrDare.Modules;
+using System.Collections.Generic;
+using Dalamud.Game.Text;
+using XivCommon;
 
 namespace TruthOrDare.Windows;
 
@@ -15,7 +18,6 @@ public class MainWindow : Window, IDisposable
     public static Configuration Config { get; set; }
     public Game Game;
     public PlayerList PlayerList;
-
     private MainTab currentMainTab = MainTab.PlayerList;
 
     public MainWindow(TruthOrDare plugin) : base(
@@ -28,7 +30,6 @@ public class MainWindow : Window, IDisposable
         };
 
         this.plugin = plugin;
-
         Game = new Game(this);
         PlayerList = new PlayerList(this);
     }
@@ -42,11 +43,11 @@ public class MainWindow : Window, IDisposable
     public void Dispose()
     {
     }
-
+    public void Close_Window(object? sender, System.EventArgs e) => IsOpen = false;
+    
     public override void Draw()
     {
         DrawMainTabs();
-
         switch (currentMainTab)
         {
             case MainTab.PlayerList:
@@ -68,7 +69,6 @@ public class MainWindow : Window, IDisposable
                 PlayerList.DrawPlayerList();
                 break;
         }
-
     }
 
     private void DrawMainTabs()
@@ -101,9 +101,17 @@ public class MainWindow : Window, IDisposable
     {
         ImGui.TextColored(ImGuiColors.DalamudGrey, "About");
         ImGui.TextWrapped("Made by Adiana Umbra@Cerberus");
-        ImGui.TextWrapped("Thanks to Primu Pyon@Omega who's code I have shamelessly modified");
+        ImGui.TextWrapped("Thanks to Amazing Primu Pyon@Omega who's code I have shamelessly modified");
         ImGui.Separator();
-
+        ImGui.Spacing();
+        ImGui.TextWrapped("+ Use Add Party to add all players in your current party to the player list(Have to be nearby).");
+        ImGui.TextWrapped("+ Use Add Target to add current target to the player list");
+        ImGui.TextWrapped("+ Or type a name and add it manually");
+        ImGui.Separator();
+        ImGui.Spacing();
+        ImGui.TextWrapped("1) Press New Round to begin a new round");
+        ImGui.TextWrapped("2) Press Roll Next Player to roll the dice for the next player. (Has to be one at a time due to chat spam limits)");
+        ImGui.TextWrapped("3) Once all players have been rolled (no longer have a roll of -1) click declare results");
         ImGui.Columns(1);
         ImGui.Separator();
         ImGuiHelpers.ScaledDummy(5);

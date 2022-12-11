@@ -100,7 +100,7 @@ namespace TruthOrDare
                 }
 
                 uint playerId = player.ObjectId;
-                if (FindGroupMemberById(playerId) != null && player.Name.TextValue != dealerName)
+                if (FindGroupMemberById(playerId) != null)
                 {
                     Player newPlayer = new Player((int)playerId, player.Name.TextValue);
                     newPlayer.Alias = newPlayer.GetAlias(nameMode);
@@ -115,6 +115,7 @@ namespace TruthOrDare
                     player.Name = "";
                 }
             }
+
             players.RemoveAll(player => player.Name == "");
 
             foreach (Player partyMember in partyMembers)
