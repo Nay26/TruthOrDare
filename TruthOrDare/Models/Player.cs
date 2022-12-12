@@ -12,14 +12,15 @@ namespace TruthOrDare.Models
             public int ID;
             public string Name = "";
             public string Alias = "";
-            public int TotalBet = 0;
-            public int BetPerHand = 0;
-            public int Winnings = 0;
-            public int TotalWinnings = 0;
             public int Roll;
+            public int wins = 0;
+            public int losses = 0;
+            public bool enabled = true;
+            public Dictionary<Player, int> lossesToPlayer = new Dictionary<Player, int>();
+            public Dictionary<Player, int> winsToPlayer = new Dictionary<Player, int>();
 
 
-            private enum ChatNameDisplayTypes { FullName, SurnameAbbrv, ForenameAbbrv, Initials }
+        private enum ChatNameDisplayTypes { FullName, SurnameAbbrv, ForenameAbbrv, Initials }
             private unsafe ChatNameDisplayTypes ChatNameDisplayType { get { return (ChatNameDisplayTypes)ConfigModule.Instance()->GetIntValue(ConfigOption.LogNameType); } }
 
             public Player()

@@ -25,7 +25,7 @@ public class MainWindow : Window, IDisposable
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(375, 630),
+            MinimumSize = new Vector2(425, 300),
             MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
         };
 

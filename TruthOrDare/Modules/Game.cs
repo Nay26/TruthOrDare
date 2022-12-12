@@ -26,6 +26,12 @@ namespace TruthOrDare.Modules
         private Player CurrentPlayer;
         private int currentPlayerNumber;
         private List<string> QueuedMessages = new List<string>();
+        private Player highestPlayer = new Player();
+        private Player lowestPlayer = new Player();
+        private Player rival1 = new Player();
+        private Player rival2 = new Player();
+        private int rival1Wins = 0;
+        private int rival2Wins = 0;
 
         private Event CurrentEvent = Event.RoundStarted;
         private enum Event { RoundStarted, PlayersRolled, WinnerDeclared }
@@ -52,8 +58,7 @@ namespace TruthOrDare.Modules
 
         private void FindWinner()
         {
-            var highestPlayer = new Player();
-            var lowestPlayer = new Player();
+           
             lowestPlayer.Roll = 1000;
             foreach (var player in players)
             {
@@ -66,9 +71,62 @@ namespace TruthOrDare.Modules
                     lowestPlayer = player;
                 }
             }
+            DoMatchCalculate();
+            CalculateRivals();
             pair = new KeyValuePair<Player, Player>(highestPlayer, lowestPlayer);
-            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["Loser"], lowestPlayer)}");
-            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["Winner"], highestPlayer)}");
+            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["WinMessage"], lowestPlayer)}");
+            lowestPlayer.losses += 1;
+            highestPlayer.wins += 1;
+            
+        }
+
+        private void DoMatchCalculate()
+        {
+            if (!lowestPlayer.lossesToPlayer.ContainsKey(highestPlayer))
+            {
+                lowestPlayer.lossesToPlayer.Add(highestPlayer, 1);
+            } else
+            {
+                lowestPlayer.lossesToPlayer[highestPlayer] += 1;
+            }
+
+            if (!highestPlayer.winsToPlayer.ContainsKey(lowestPlayer))
+            {
+                highestPlayer.winsToPlayer.Add(lowestPlayer, 1);
+            }
+            else
+            {
+                highestPlayer.winsToPlayer[lowestPlayer] += 1;
+            }
+
+
+            if (!lowestPlayer.winsToPlayer.ContainsKey(highestPlayer))
+            {
+                lowestPlayer.winsToPlayer.Add(highestPlayer, 0);
+            }
+            if (!highestPlayer.winsToPlayer.ContainsKey(lowestPlayer))
+            {
+                highestPlayer.winsToPlayer.Add(lowestPlayer, 0);
+            }
+        }
+
+        private void CalculateRivals()
+        {
+            int highestWins = 0;
+            foreach (var player in players)
+            {
+                foreach (var matchup in player.winsToPlayer)
+                {
+                    if (matchup.Value > highestWins)
+                    {
+                        highestWins = matchup.Value;
+                        rival2 = matchup.Key;
+                        rival1 = player;
+                        rival1Wins = matchup.Value;
+                        rival2Wins = rival2.winsToPlayer[rival1];
+                    }             
+                }
+            }
         }
 
         public void CheckPlayerRoll(string sender, string message)
@@ -77,7 +135,13 @@ namespace TruthOrDare.Modules
             {
                 LastRoll = int.Parse(MainWindow.Config.RollCommand == "/dice" ? message.Replace("Random! (1-999) ", "") : Regex.Replace(message, ".*You roll a ([^\\(]+)\\(.*", "$1", RegexOptions.Singleline).Trim());
                 CurrentPlayer.Roll = LastRoll;
-                SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
+                if (CurrentPlayer.Roll == 69)
+                {
+                    SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled69"], CurrentPlayer)}");
+                } else
+                {
+                    SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
+                }
                 currentPlayerNumber++;
                 if (currentPlayerNumber == players.Count && CurrentEvent == Event.RoundStarted)
                 {
@@ -89,11 +153,10 @@ namespace TruthOrDare.Modules
 
         public void DrawMatch()
         {
-            ImGui.Text(CurrentEvent.ToString());
             if (ImGui.Button("New Round"))
             {
                 CurrentEvent = Event.RoundStarted;
-                players = new List<Player>(MainWindow.PlayerList.Players);
+                players = new List<Player>(MainWindow.PlayerList.Players.Where(p => p.enabled).ToList());
                 currentPlayerNumber = 0;
                 foreach (var player in players)
                 {
@@ -119,7 +182,15 @@ namespace TruthOrDare.Modules
                 {
                     FindWinner();
                     players = players.OrderByDescending(p => p.Roll).ToList();
+                    CurrentEvent= Event.WinnerDeclared;
                 }
+            }
+            ImGui.SameLine();
+            if (ImGui.Button("Declare Stats"))
+            {
+                SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["StatMostWins"], highestPlayer)}");
+                SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["StatMostLosses"], lowestPlayer)}");
+                SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["StatBiggestRivals"], lowestPlayer)}");
             }
             DrawResults();
             if (QueuedMessages.Count > 0)
@@ -132,9 +203,10 @@ namespace TruthOrDare.Modules
 
         private void DrawResults()
         {
-            ImGui.Columns(2);
-            ImGui.SetColumnWidth(0, 350 + 5 * ImGuiHelpers.GlobalScale); //First name
-            ImGui.SetColumnWidth(1, 500 + 5 * ImGuiHelpers.GlobalScale); //Second Name
+            ImGui.Columns(3);
+            ImGui.SetColumnWidth(0, 150 + 3 * ImGuiHelpers.GlobalScale); //First name
+            ImGui.SetColumnWidth(1, 150 + 3 * ImGuiHelpers.GlobalScale); //Second Name
+            ImGui.SetColumnWidth(2, 150 + 3 * ImGuiHelpers.GlobalScale); //Second Name
 
             ImGui.Separator();
 
@@ -142,7 +214,8 @@ namespace TruthOrDare.Modules
             ImGui.NextColumn();
             ImGui.Text("Loser");
             ImGui.NextColumn();
-
+            ImGui.Text("Matchup");
+            ImGui.NextColumn();
             ImGui.Separator();
             if (pair.Key != null)
             {
@@ -150,6 +223,8 @@ namespace TruthOrDare.Modules
                 ImGui.Text($"{pair.Key.Name}");
                 ImGui.NextColumn();
                 ImGui.Text($"{pair.Value.Name}");
+                ImGui.NextColumn();
+                ImGui.Text($"{pair.Key.winsToPlayer[pair.Value]} vs {pair.Value.winsToPlayer[pair.Key]}");
                 ImGui.NextColumn();
             }
             ImGui.Separator();
@@ -164,12 +239,16 @@ namespace TruthOrDare.Modules
             ImGui.NextColumn();
             ImGui.Text($"Roll");
             ImGui.NextColumn();
+            ImGui.Text($"Win/Loss");
+            ImGui.NextColumn();
             ImGui.Separator();
             foreach (var player in players)
             {
                 ImGui.Text($"{player.Name}");
                 ImGui.NextColumn();
                 ImGui.Text($"{player.Roll}");
+                ImGui.NextColumn();
+                ImGui.Text($"{player.wins} / {player.losses}");
                 ImGui.NextColumn();
                 ImGui.Separator();
             }
@@ -213,7 +292,15 @@ namespace TruthOrDare.Modules
 
             return message.Replace("#dealer#", player.Alias)
                 .Replace("#player#", player.Alias)
-                .Replace("#roll#", player.Roll.ToString());
+                .Replace("#roll#", player.Roll.ToString())
+                .Replace("#winner#", highestPlayer.Name)
+                .Replace("#loser#", lowestPlayer.Name)
+                .Replace("#mostwins#", highestPlayer.wins.ToString())
+                .Replace("#mostlosses#", lowestPlayer.losses.ToString())
+                .Replace("#rival1#", rival1.Alias)
+                .Replace("#rival2#", rival2.Alias)
+                .Replace("#rival1Wins#", rival1Wins.ToString())
+                .Replace("#rival2Wins#", rival2Wins.ToString()); 
         }
 
         private void SendMessage(string message)

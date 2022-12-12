@@ -38,9 +38,7 @@ namespace TruthOrDare.Modules
         public void Initialize()
         {
             Dealer = new Player(0);
-            Dealer.Name = TruthOrDare.ClientState.LocalPlayer.Name.TextValue;       
-            Dealer.Alias = Dealer.GetAlias(NameMode.First);
-            Players = new List<Player>(); 
+            Players = new List<Player>();
         }
         private void AddParty()
         {
@@ -71,7 +69,7 @@ namespace TruthOrDare.Modules
                 {
                     Name = newPlayer.Name,
                 };
-                p.Alias = p.GetAlias(NameMode.First);
+                p.Alias = p.GetAlias(NameMode.Both);
                 Players.Add(p);
             }
         }
@@ -94,6 +92,12 @@ namespace TruthOrDare.Modules
        
         public void DrawPlayerList()
         {
+            if (string.IsNullOrEmpty(Dealer.Name) && TruthOrDare.ClientState != null)
+            {             
+                Dealer.Name = TruthOrDare.ClientState.LocalPlayer.Name.TextValue;
+                Dealer.Alias = Dealer.GetAlias(NameMode.Both);
+            }
+            
             if (ImGui.Button("Add Party"))
             {
                 AddParty();
@@ -119,7 +123,7 @@ namespace TruthOrDare.Modules
         {
             ImGui.Columns(2);
             ImGui.SetColumnWidth(0, 160 + 2 * ImGuiHelpers.GlobalScale); //Name
-            ImGui.SetColumnWidth(1, 50 + 2 * ImGuiHelpers.GlobalScale); //Add
+            ImGui.SetColumnWidth(1, 160 + 2 * ImGuiHelpers.GlobalScale); //Add
 
             ImGui.Separator();
 
@@ -146,13 +150,15 @@ namespace TruthOrDare.Modules
 
         private void DrawPlayers()
         {
-            ImGui.Columns(2);
-            ImGui.SetColumnWidth(0, 160 + 2 * ImGuiHelpers.GlobalScale); //First name
-            ImGui.SetColumnWidth(1, 50 + 2 * ImGuiHelpers.GlobalScale); //Remove
-
+            ImGui.Columns(3);
+            ImGui.SetColumnWidth(0, 160 + 3 * ImGuiHelpers.GlobalScale); //First name
+            ImGui.SetColumnWidth(1, 160 + 3 * ImGuiHelpers.GlobalScale); //Remove
+            ImGui.SetColumnWidth(2, 160 + 3 * ImGuiHelpers.GlobalScale); //Remove
             ImGui.Separator();
 
             ImGui.Text("Name");
+            ImGui.NextColumn();
+            ImGui.Text("Enable");
             ImGui.NextColumn();
             ImGui.Text("Remove");
             ImGui.NextColumn();
@@ -163,17 +169,28 @@ namespace TruthOrDare.Modules
             {
                 ImGui.Text(player.Name);
                 ImGui.NextColumn();
-                if (ImGui.Button("Delete", new Vector2(40, 25)))
-                {                  
-                    Players.Remove(player);
+                ImGui.Checkbox($"Enable {player.Name}", ref player.enabled);
+                ImGui.NextColumn();
+                if (ImGui.Button($"Delete {player.Name}", new Vector2(160, 25)))
+                {
+                    RemovePlayer(player.Name);
                     MainWindow.Game.Initialize();
                 };
-                ImGui.NextColumn();
+                ImGui.NextColumn();        
                 ImGui.Separator();
             }
 
            
             ImGui.Columns(1);
+        }
+
+        private void RemovePlayer(string name)
+        {
+            var p = Players.Find(p => p.Name.ToLower().Equals(name.ToLower()));
+            if (p != null)
+            {
+                Players.Remove(p);
+            }
         }
        
     }

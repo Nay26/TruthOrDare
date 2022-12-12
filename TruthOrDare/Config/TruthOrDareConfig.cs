@@ -6,15 +6,14 @@ namespace TruthOrDare
     {
         public int MaxRoll { get; set; } = 999;
 
-        public Dictionary<string, string> Messages_Rules = new Dictionary<string, string>() {
-            { "Title", " Blackjack Rules " },
-        };
-
         public Dictionary<string, string> Messages = new Dictionary<string, string>() {
-            { "RoundStart", "Round Starting! Good Luck! <se.12>" },
-            { "PlayerRolled", "\" #player#  Rolls a #roll#\" }," },
-            { "Winner", "\" #player#  Will ask them Truth or Dare!\" }," },
-            { "Loser", "\" #player#  Has the lowest roll!\" }," },
+            { "RoundStart", " Starting a New Round!  <se.12>" },
+            { "PlayerRolled", "\" #player#  Rolls a #roll#\" " },
+            { "PlayerRolled69", "\" #player#  Rolls a #roll#. Nice.\"" },
+            { "WinMessage", "\" #winner#  Asks  #loser#  Truth or Dare!\"" },
+            { "StatMostWins", "\" #player#  has been working overtime with #mostwins# wins!\"" },
+            { "StatMostLosses", "\" #player#  is the biggest bottom with #mostlosses# losses!\"" },
+            { "StatBiggestRivals", "\" #rival1#  and  #rival2#  have been paired the most times! Current score #rival1Wins# : #rival2Wins#!\""},
         };
     }
 }
