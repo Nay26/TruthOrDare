@@ -58,17 +58,18 @@ namespace TruthOrDare.Modules
 
         private void FindWinner()
         {
-           
-            lowestPlayer.Roll = 1000;
+
+            var lowroll = 1000;
             foreach (var player in players)
             {
                 if (player.Roll >= highestPlayer.Roll)
                 {
                     highestPlayer = player;
                 }
-                if (player.Roll <= lowestPlayer.Roll)
+                if (player.Roll <= lowroll)
                 {
                     lowestPlayer = player;
+                    lowroll = lowestPlayer.Roll;
                 }
             }
             DoMatchCalculate();
@@ -134,19 +135,23 @@ namespace TruthOrDare.Modules
             try
             {
                 LastRoll = int.Parse(MainWindow.Config.RollCommand == "/dice" ? message.Replace("Random! (1-999) ", "") : Regex.Replace(message, ".*You roll a ([^\\(]+)\\(.*", "$1", RegexOptions.Singleline).Trim());
-                CurrentPlayer.Roll = LastRoll;
-                if (CurrentPlayer.Roll == 69)
+                if (CurrentPlayer.Roll == -1)
                 {
-                    SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled69"], CurrentPlayer)}");
-                } else
-                {
-                    SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
-                }
-                currentPlayerNumber++;
-                if (currentPlayerNumber == players.Count && CurrentEvent == Event.RoundStarted)
-                {
-                    CurrentEvent = Event.PlayersRolled;
-                }
+                    CurrentPlayer.Roll = LastRoll;
+                    if (CurrentPlayer.Roll == 69)
+                    {
+                        SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled69"], CurrentPlayer)}");
+                    }
+                    else
+                    {
+                        SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
+                    }
+                    currentPlayerNumber++;
+                    if (currentPlayerNumber == players.Count && CurrentEvent == Event.RoundStarted)
+                    {
+                        CurrentEvent = Event.PlayersRolled;
+                    }
+                }             
             }
             catch { }
         }
