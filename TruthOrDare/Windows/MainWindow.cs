@@ -8,8 +8,6 @@ using System.Numerics;
 using TruthOrDare.Modules;
 using System.Collections.Generic;
 using Dalamud.Game.Text;
-using XivCommon;
-
 namespace TruthOrDare.Windows;
 
 public class MainWindow : Window, IDisposable

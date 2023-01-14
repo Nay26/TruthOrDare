@@ -8,22 +8,13 @@
     ".NETCoreApp,Version=v7.0": {
       "TruthOrDare/0.0.0.1": {
         "dependencies": {
-          "DalamudPackager": "2.1.10",
-          "XivCommon": "6.0.1"
+          "DalamudPackager": "2.1.10"
         },
         "runtime": {
           "TruthOrDare.dll": {}
         }
       },
-      "DalamudPackager/2.1.10": {},
-      "XivCommon/6.0.1": {
-        "runtime": {
-          "lib/net6.0-windows7.0/XivCommon.dll": {
-            "assemblyVersion": "6.0.1.0",
-            "fileVersion": "6.0.1.0"
-          }
-        }
-      }
+      "DalamudPackager/2.1.10": {}
     }
   },
   "libraries": {
@@ -38,13 +29,6 @@
       "sha512": "sha512-S6NrvvOnLgT4GDdgwuKVJjbFo+8ZEj+JsEYk9ojjOR/MMfv1dIFpT8aRJQfI24rtDcw1uF+GnSSMN4WW1yt7fw==",
       "path": "dalamudpackager/2.1.10",
       "hashPath": "dalamudpackager.2.1.10.nupkg.sha512"
-    },
-    "XivCommon/6.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-X58/iHscbwzF9JziooBKYE4S0XDYuGYI7Eg5Er1LhdQSjGwMLes0whRdKtH591wIhefFiS5G14W6EEL3Qt76wg==",
-      "path": "xivcommon/6.0.1",
-      "hashPath": "xivcommon.6.0.1.nupkg.sha512"
     }
   }
 }

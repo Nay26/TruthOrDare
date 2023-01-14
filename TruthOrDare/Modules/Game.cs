@@ -200,7 +200,7 @@ namespace TruthOrDare.Modules
             DrawResults();
             if (QueuedMessages.Count > 0)
             {
-                TruthOrDare.XivCommon.Functions.Chat.SendMessage(QueuedMessages[0]);
+                TruthOrDare.Chat.SendMessage(QueuedMessages[0]);
                 QueuedMessages.RemoveAt(0);
             }
             DrawPlayers();

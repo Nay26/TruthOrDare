@@ -8,8 +8,8 @@ using TruthOrDare.Windows;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game;
-using XivCommon;
 using Dalamud.Game.Gui;
+using Util;
 
 namespace TruthOrDare
 {
@@ -19,6 +19,7 @@ namespace TruthOrDare
         [PluginService] public static ObjectTable Objects { get; private set; } = null!;
         [PluginService] public static SigScanner SigScanner { get; private set; } = null!;
         [PluginService] public static ChatGui ChatGui { get; private set; } = null!;
+        public static Chat Chat;
 
         public string Name => "TruthOrDare";
         private const string CommandName = "/tord";
@@ -27,7 +28,6 @@ namespace TruthOrDare
 
         private static MainWindow MainWindow;
         public WindowSystem WindowSystem = new("TruthOrDare");
-        public static XivCommonBase XivCommon;
 
         public TruthOrDare(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
@@ -35,11 +35,11 @@ namespace TruthOrDare
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
-            XivCommon = new XivCommonBase();
 
             WindowSystem = new WindowSystem(Name);
             MainWindow = new MainWindow(this) { IsOpen = false };
             MainWindow.Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            Chat = new Chat(SigScanner);
             MainWindow.Config.Initialize(PluginInterface);
             WindowSystem.AddWindow(MainWindow);
             MainWindow.Initialize();
