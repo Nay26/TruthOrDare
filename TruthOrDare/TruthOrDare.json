@@ -1,8 +1,9 @@
-{
+[
+    {
         "Author": "Adiana",
         "Name": "TruthOrDare",
         "InternalName": "TruthOrDare",
-        "AssemblyVersion": "1.0.0.7",
+        "AssemblyVersion": "1.0.0.9",
         "Description": "/tord",
         "RepoUrl": "https://github.com/Nay26/TruthOrDare",
         "ApplicableVersion": "any",
@@ -10,7 +11,7 @@
             "sample",
             "plugin"
         ],
-        "DalamudApiLevel": 8,
+        "DalamudApiLevel": 7,
         "LoadPriority": 0,
         "Punchline": "My Truth or Dare plugin",
         "DownloadLinkInstall": "https://github.com/Nay26/TruthOrDare/raw/master/bin/TruthOrDare.zip",
@@ -18,4 +19,5 @@
         "IsTestingExclusive": false,
         "DownloadLinkTesting": "https://github.com/Nay26/TruthOrDare/raw/master/bin/TruthOrDare.zip",
         "DownloadLinkUpdate": "https://github.com/Nay26/TruthOrDare/raw/master/bin/TruthOrDare.zip"
-}
+    }
+]
