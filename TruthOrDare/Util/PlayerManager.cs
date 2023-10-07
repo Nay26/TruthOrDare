@@ -21,7 +21,7 @@ namespace TruthOrDare
 
         public PlayerManager()
         {
-            UpdateParty updateParty = new(TruthOrDare.SigScanner);
+            UpdateParty updateParty = new();
             _updatePartyHook = updateParty.CreateHook(UpdatePartyHook)!;
         }
 
@@ -160,7 +160,6 @@ namespace TruthOrDare
         private void UpdatePartyHook(IntPtr hudPtr)
         {
             _hudPtr = hudPtr;
-            PluginLog.LogVerbose($"HUD Address 0x{_hudPtr.ToInt64():X16}");
             _updatePartyHook.Original(hudPtr);
             _updatePartyHook.Disable();
             _updatePartyHook.Dispose();

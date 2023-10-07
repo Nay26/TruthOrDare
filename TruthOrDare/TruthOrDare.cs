@@ -23,7 +23,6 @@ namespace TruthOrDare
         [PluginService]
         internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
 
-        internal static PluginAddressResolver Address { get; set; } = null!;
         [PluginService] public static ISigScanner SigScanner { get; private set; } = null!;
         [PluginService] public static IChatGui ChatGui { get; private set; } = null!;
         public static Chat Chat;
@@ -46,7 +45,7 @@ namespace TruthOrDare
             WindowSystem = new WindowSystem(Name);
             MainWindow = new MainWindow(this) { IsOpen = false };
             MainWindow.Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            Chat = new Chat(SigScanner.);
+            Chat = new Chat();
             MainWindow.Config.Initialize(PluginInterface);
             WindowSystem.AddWindow(MainWindow);
             MainWindow.Initialize();

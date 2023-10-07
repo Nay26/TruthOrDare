@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Utility;
+using Dalamud.Logging;
 
 namespace TruthOrDare.Modules
 {
@@ -78,7 +79,8 @@ namespace TruthOrDare.Modules
 
         private void AddTarget()
         {
-            var target = TruthOrDare.ClientState.LocalPlayer.TargetObject;
+            var target = TruthOrDare.ClientState.LocalPlayer?.TargetObject;
+            PluginLog.Debug(target.ObjectId.ToString() + " ++++++++++ ");
             if (target.ObjectKind == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Player)
             {
                 newPlayer.Name = target.Name.TextValue;

@@ -25,7 +25,7 @@ namespace TruthOrDare.Models
         { FullName, SurnameAbbrv, ForenameAbbrv, Initials }
 
         private unsafe ChatNameDisplayTypes ChatNameDisplayType
-        { get { return 0; } }
+        { get { return ChatNameDisplayTypes.FullName; } }
 
         public Player()
         {

@@ -26,16 +26,16 @@ namespace Util
 
         private readonly unsafe delegate* unmanaged<Utf8String*, int, IntPtr, void> _sanitiseString = null!;
 
-        internal Chat(SigScanner scanner)
+        internal Chat()
         {
-            if (scanner.TryScanText(Signatures.SendChat, out var processChatBoxPtr, "chat sending"))
+            if (TruthOrDare.TruthOrDare.SigScanner.TryScanText(Signatures.SendChat, out var processChatBoxPtr))
             {
                 this.ProcessChatBox = Marshal.GetDelegateForFunctionPointer<ProcessChatBoxDelegate>(processChatBoxPtr);
             }
 
             unsafe
             {
-                if (scanner.TryScanText(Signatures.SanitiseString, out var sanitisePtr, "string sanitiser"))
+                if (TruthOrDare.TruthOrDare.SigScanner.TryScanText(Signatures.SanitiseString, out var sanitisePtr))
                 {
                     this._sanitiseString = (delegate* unmanaged<Utf8String*, int, IntPtr, void>)sanitisePtr;
                 }
@@ -194,7 +194,6 @@ namespace Util
             {
                 if (name != null)
                 {
-                    Dalamud.Logging.PluginLog.LogWarning($"Could not find signature for {name}. This functionality will be disabled.");
                 }
 
                 return false;
