@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Interface.Utility;
 
 namespace TruthOrDare.Modules
 {
@@ -40,6 +41,7 @@ namespace TruthOrDare.Modules
             Dealer = new Player(0);
             Players = new List<Player>();
         }
+
         private void AddParty()
         {
             if (MainWindow.Config.ChatChannel == "/p" && MainWindow.Config.AutoParty)
@@ -89,21 +91,22 @@ namespace TruthOrDare.Modules
             newPlayer = new Player();
             Players.Clear();
         }
-       
+
         public void DrawPlayerList()
         {
             if (string.IsNullOrEmpty(Dealer.Name) && TruthOrDare.ClientState != null)
-            {             
+            {
                 Dealer.Name = TruthOrDare.ClientState.LocalPlayer.Name.TextValue;
                 Dealer.Alias = Dealer.GetAlias(NameMode.Both);
             }
-            
+
             if (ImGui.Button("Add Party"))
             {
                 AddParty();
             }
             ImGui.SameLine();
-            if (ImGui.Button("Add Target")) {
+            if (ImGui.Button("Add Target"))
+            {
                 AddTarget();
             }
             ImGui.SameLine();
@@ -176,11 +179,10 @@ namespace TruthOrDare.Modules
                     RemovePlayer(player.Name);
                     MainWindow.Game.Initialize();
                 };
-                ImGui.NextColumn();        
+                ImGui.NextColumn();
                 ImGui.Separator();
             }
 
-           
             ImGui.Columns(1);
         }
 
@@ -192,6 +194,5 @@ namespace TruthOrDare.Modules
                 Players.Remove(p);
             }
         }
-       
     }
 }

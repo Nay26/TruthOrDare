@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Dalamud.Game;
 using Dalamud.Hooking;
 using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 
 namespace TruthOrDare.Util
 {
@@ -10,7 +11,9 @@ namespace TruthOrDare.Util
 
     public sealed class UpdateParty : SeFunction<UpdatePartyDelegate>
     {
-        public UpdateParty(SigScanner sigScanner) : base(sigScanner, "40 ?? 48 83 ?? ?? 48 8B ?? 48 ?? ?? ?? 48 ?? ?? ?? ?? ?? ?? 83 ?? ?? ?? ?? ?? ?? 74 ?? 48") { }
+        public UpdateParty(SigScanner sigScanner) : base(sigScanner, "40 ?? 48 83 ?? ?? 48 8B ?? 48 ?? ?? ?? 48 ?? ?? ?? ?? ?? ?? 83 ?? ?? ?? ?? ?? ?? 74 ?? 48")
+        {
+        }
     }
 
     public class SeFunction<T> where T : Delegate
@@ -69,7 +72,7 @@ namespace TruthOrDare.Util
         {
             if (Address != IntPtr.Zero)
             {
-                var hook = Hook<T>.FromAddress(Address, detour);
+                var hook = TruthOrDare.GameInteropProvider.HookFromAddress<T>(Address, detour);
                 hook.Enable();
                 PluginLog.Debug($"Hooked onto {GetType().Name} at address 0x{Address.ToInt64():X16}.");
                 return hook;

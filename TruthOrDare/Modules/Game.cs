@@ -1,5 +1,6 @@
 using Dalamud.Game.Text;
 using Dalamud.Interface;
+using Dalamud.Interface.Utility;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using System;
@@ -21,8 +22,8 @@ namespace TruthOrDare.Modules
         private List<Player> players; //list of all players
         private static Random rng = new Random();
         private bool printMatches;
-        string debug = "not recieved";
-        int LastRoll = 0;
+        private string debug = "not recieved";
+        private int LastRoll = 0;
         private Player CurrentPlayer;
         private int currentPlayerNumber;
         private List<string> QueuedMessages = new List<string>();
@@ -34,7 +35,9 @@ namespace TruthOrDare.Modules
         private int rival2Wins = 0;
 
         private Event CurrentEvent = Event.RoundStarted;
-        private enum Event { RoundStarted, PlayersRolled, WinnerDeclared }
+
+        private enum Event
+        { RoundStarted, PlayersRolled, WinnerDeclared }
 
         public Game(MainWindow mainWindow)
         {
@@ -58,7 +61,6 @@ namespace TruthOrDare.Modules
 
         private void FindWinner()
         {
-
             var lowroll = 1000;
             foreach (var player in players)
             {
@@ -78,7 +80,6 @@ namespace TruthOrDare.Modules
             SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["WinMessage"], lowestPlayer)}");
             lowestPlayer.losses += 1;
             highestPlayer.wins += 1;
-            
         }
 
         private void DoMatchCalculate()
@@ -86,7 +87,8 @@ namespace TruthOrDare.Modules
             if (!lowestPlayer.lossesToPlayer.ContainsKey(highestPlayer))
             {
                 lowestPlayer.lossesToPlayer.Add(highestPlayer, 1);
-            } else
+            }
+            else
             {
                 lowestPlayer.lossesToPlayer[highestPlayer] += 1;
             }
@@ -99,7 +101,6 @@ namespace TruthOrDare.Modules
             {
                 highestPlayer.winsToPlayer[lowestPlayer] += 1;
             }
-
 
             if (!lowestPlayer.winsToPlayer.ContainsKey(highestPlayer))
             {
@@ -125,7 +126,7 @@ namespace TruthOrDare.Modules
                         rival1 = player;
                         rival1Wins = matchup.Value;
                         rival2Wins = rival2.winsToPlayer[rival1];
-                    }             
+                    }
                 }
             }
         }
@@ -151,7 +152,7 @@ namespace TruthOrDare.Modules
                     {
                         CurrentEvent = Event.PlayersRolled;
                     }
-                }             
+                }
             }
             catch { }
         }
@@ -178,7 +179,6 @@ namespace TruthOrDare.Modules
                 {
                     RollPlayers();
                 }
-
             }
             ImGui.SameLine();
             if (ImGui.Button("Declare Results"))
@@ -187,7 +187,7 @@ namespace TruthOrDare.Modules
                 {
                     FindWinner();
                     players = players.OrderByDescending(p => p.Roll).ToList();
-                    CurrentEvent= Event.WinnerDeclared;
+                    CurrentEvent = Event.WinnerDeclared;
                 }
             }
             ImGui.SameLine();
@@ -204,7 +204,7 @@ namespace TruthOrDare.Modules
                 QueuedMessages.RemoveAt(0);
             }
             DrawPlayers();
-        }    
+        }
 
         private void DrawResults()
         {
@@ -224,7 +224,6 @@ namespace TruthOrDare.Modules
             ImGui.Separator();
             if (pair.Key != null)
             {
-
                 ImGui.Text($"{pair.Key.Name}");
                 ImGui.NextColumn();
                 ImGui.Text($"{pair.Value.Name}");
@@ -261,7 +260,6 @@ namespace TruthOrDare.Modules
 
         private void SendMessageToQueue(string message, MessageType messageType)
         {
-
             if (!string.IsNullOrWhiteSpace(message))
             {
                 if (messageType == MessageType.Normal)
@@ -278,7 +276,6 @@ namespace TruthOrDare.Modules
 
         public void OnChatMessage(XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
         {
-
             if (isHandled) { return; }
 
             ReceivedMessage(sender.TextValue, message.TextValue);
@@ -288,7 +285,6 @@ namespace TruthOrDare.Modules
         {
             CheckPlayerRoll(sender, message);
         }
-
 
         private string FormatMessage(string message, Player player)
         {
@@ -305,14 +301,13 @@ namespace TruthOrDare.Modules
                 .Replace("#rival1#", rival1.Alias)
                 .Replace("#rival2#", rival2.Alias)
                 .Replace("#rival1Wins#", rival1Wins.ToString())
-                .Replace("#rival2Wins#", rival2Wins.ToString()); 
+                .Replace("#rival2Wins#", rival2Wins.ToString());
         }
 
         private void SendMessage(string message)
         {
             debug = "here" + message;
             SendMessageToQueue(message, MessageType.Normal);
-
         }
 
         private void SendRoll()

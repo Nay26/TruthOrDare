@@ -10,28 +10,35 @@ using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game;
 using Dalamud.Game.Gui;
 using Util;
+using Dalamud.Plugin.Services;
+using System.Linq;
 
 namespace TruthOrDare
 {
     public class TruthOrDare : IDalamudPlugin
     {
-        [PluginService] public static ClientState ClientState { get; private set; } = null!;
-        [PluginService] public static ObjectTable Objects { get; private set; } = null!;
-        [PluginService] public static SigScanner SigScanner { get; private set; } = null!;
-        [PluginService] public static ChatGui ChatGui { get; private set; } = null!;
+        [PluginService] public static IClientState ClientState { get; private set; } = null!;
+        [PluginService] public static IObjectTable Objects { get; private set; } = null!;
+
+        [PluginService]
+        internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
+
+        internal static PluginAddressResolver Address { get; set; } = null!;
+        [PluginService] public static ISigScanner SigScanner { get; private set; } = null!;
+        [PluginService] public static IChatGui ChatGui { get; private set; } = null!;
         public static Chat Chat;
 
         public string Name => "TruthOrDare";
         private const string CommandName = "/tord";
         private DalamudPluginInterface PluginInterface { get; init; }
-        private CommandManager CommandManager { get; init; }
+        private ICommandManager CommandManager { get; init; }
 
         private static MainWindow MainWindow;
         public WindowSystem WindowSystem = new("TruthOrDare");
 
         public TruthOrDare(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] CommandManager commandManager)
+            [RequiredVersion("1.0")] ICommandManager commandManager)
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
@@ -39,7 +46,7 @@ namespace TruthOrDare
             WindowSystem = new WindowSystem(Name);
             MainWindow = new MainWindow(this) { IsOpen = false };
             MainWindow.Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            Chat = new Chat(SigScanner);
+            Chat = new Chat(SigScanner.);
             MainWindow.Config.Initialize(PluginInterface);
             WindowSystem.AddWindow(MainWindow);
             MainWindow.Initialize();
@@ -48,7 +55,7 @@ namespace TruthOrDare
             {
                 HelpMessage = "A useful message to display in /xlhelp"
             });
-            
+
             this.PluginInterface.UiBuilder.Draw += DrawUI;
 
             ChatGui.ChatMessage += MainWindow.Game.OnChatMessage;
@@ -63,7 +70,7 @@ namespace TruthOrDare
         private void OnCommand(string command, string args)
         {
             // in response to the slash command, just display our main ui
-            WindowSystem.GetWindow("Truth Or Dare").IsOpen = true;
+            WindowSystem.Windows.FirstOrDefault(w => w.WindowName.Equals("Truth Or Dare")).IsOpen = true;
         }
 
         private void DrawUI()

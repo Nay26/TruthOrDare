@@ -8,6 +8,8 @@ using System.Numerics;
 using TruthOrDare.Modules;
 using System.Collections.Generic;
 using Dalamud.Game.Text;
+using Dalamud.Interface.Utility;
+
 namespace TruthOrDare.Windows;
 
 public class MainWindow : Window, IDisposable
@@ -41,8 +43,9 @@ public class MainWindow : Window, IDisposable
     public void Dispose()
     {
     }
+
     public void Close_Window(object? sender, System.EventArgs e) => IsOpen = false;
-    
+
     public override void Draw()
     {
         DrawMainTabs();
@@ -95,6 +98,7 @@ public class MainWindow : Window, IDisposable
             ImGui.Spacing();
         }
     }
+
     private void DrawAbout()
     {
         ImGui.TextColored(ImGuiColors.DalamudGrey, "About");
