@@ -139,13 +139,31 @@ namespace TruthOrDare.Modules
                 if (CurrentPlayer.Roll == -1)
                 {
                     CurrentPlayer.Roll = LastRoll;
-                    if (CurrentPlayer.Roll == 69)
+                    switch (CurrentPlayer.Roll)
                     {
-                        SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled69"], CurrentPlayer)}");
-                    }
-                    else
-                    {
-                        SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
+                        case 1:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled1"], CurrentPlayer)}");
+                            break;
+
+                        case 69:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled69"], CurrentPlayer)}");
+                            break;
+
+                        case 420:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled420"], CurrentPlayer)}");
+                            break;
+
+                        case 666:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled666"], CurrentPlayer)}");
+                            break;
+
+                        case 999:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled999"], CurrentPlayer)}");
+                            break;
+
+                        default:
+                            SendMessage($"{FormatMessage(MainWindow.Config.TruthOrDareConfig.Messages["PlayerRolled"], CurrentPlayer)}");
+                            break;
                     }
                     currentPlayerNumber++;
                     if (currentPlayerNumber == players.Count && CurrentEvent == Event.RoundStarted)
